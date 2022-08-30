@@ -1,0 +1,23 @@
+{
+  "name": "react-native-magic-sheet-example",
+  "displayName": "MagicSheet Example",
+  "expo": {
+    "name": "react-native-magic-sheet-example",
+    "slug": "react-native-magic-sheet-example",
+    "description": "Example app for react-native-magic-sheet",
+    "privacy": "public",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "jsEngine": "hermes",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
