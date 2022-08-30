@@ -6,21 +6,31 @@ import React, {
   useMemo,
   useEffect,
 } from 'react';
-import { BackHandler, StyleSheet } from 'react-native';
+import { BackHandler } from 'react-native';
 import { magicSheetRef } from './MagicSheetHandlers';
 import type {
   NewSheetProps,
   SheetContent,
   TMagicSheet,
 } from './MagicSheetHandlers';
-import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
+import {
+  BottomSheetBackdrop,
+  BottomSheetModal,
+  type BottomSheetModalProps,
+} from '@gorhom/bottom-sheet';
 
 type ResolveFunction = (props?: any) => void;
+
+type MagicSheetPortalProps = Partial<
+  Omit<BottomSheetModalProps, 'ref' | 'index'>
+>;
 
 /**
  * @description A magic portal that should stay on the top of the app component hierarchy for the sheet to be displayed.
  */
-export const MagicSheetPortal: React.FC = () => {
+export const MagicSheetPortal: React.FC<MagicSheetPortalProps> = (
+  portalProps
+) => {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [config, setConfig] = useState<NewSheetProps>({});
@@ -88,17 +98,18 @@ export const MagicSheetPortal: React.FC = () => {
 
   return (
     <BottomSheetModal
-      backgroundStyle={{ backgroundColor: 'white' }}
       ref={bottomSheetRef}
       index={0}
       snapPoints={snapPoints}
       backdropComponent={renderBackdrop}
       keyboardBlurBehavior="restore"
+      {...portalProps}
       {...config}
       onDismiss={() => {
         if (!lastPromiseDidResolve.current) {
           resolveRef.current();
         }
+        config.onDismiss?.();
         setIsVisible(false);
       }}
       onChange={(index) => {
@@ -108,16 +119,11 @@ export const MagicSheetPortal: React.FC = () => {
         if (index === -1) {
           setIsVisible(false);
         }
+        config.onChange?.(index);
       }}
-      style={[styles.container, config?.style]}
+      style={config.style ?? portalProps.style}
     >
       {sheetContent}
     </BottomSheetModal>
   );
 };
-
-export const styles = StyleSheet.create({
-  container: {
-    margin: 0,
-  },
-});
