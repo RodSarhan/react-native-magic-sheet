@@ -2,7 +2,7 @@
 
 _A Bottom Sheet library that can be called imperatively from anywhere!_
 
-## React Native Magic Sheet 🪄 
+## React Native Magic Sheet :sparkles: 
 
 Inspired by [react-native-magic-modal](https://gorhom.github.io/react-native-bottom-sheet/modal/) This library aims to solve the need to declaretively add bottom sheets to our screens by providing an imperative API that can be called from anywhere in the app (even outside of components) to show a fully customizeable bottom sheet with the ability to wait for it to resolve and get a response back.
 
