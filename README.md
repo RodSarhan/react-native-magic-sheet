@@ -1,4 +1,4 @@
-![React Native Magic Sheet Cover](assts/../docs/assets/banner.png)
+![React Native Magic Sheet Cover](/docs/assets/banner.png)
 
 _A Bottom Sheet library that can be called imperatively from anywhere!_
 
@@ -16,7 +16,7 @@ Therefore the setup proccess of [@gorhom/bottom-sheet](https://gorhom.github.io/
 
 | IOS                                                                                                                           | Android                                                                                                                       |
 | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| <img src="assets/ios.gif" height=500/> | <img src="assets/android.gif" height=500/>  |
+| <img src="/docs/assets/ios.gif" height=500/> | <img src="/docs/assets/android.gif" height=500/>  |
 
 ## 🛠 Installation
 
