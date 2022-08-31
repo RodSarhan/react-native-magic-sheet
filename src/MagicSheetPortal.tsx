@@ -113,10 +113,10 @@ export const MagicSheetPortal: React.FC<MagicSheetPortalProps> = (
         setIsVisible(false);
       }}
       onChange={(index) => {
-        if (index === 0) {
+        if (index >= 0) {
           setIsVisible(true);
         }
-        if (index === -1) {
+        if (index <= -1) {
           setIsVisible(false);
         }
         config.onChange?.(index);
