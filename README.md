@@ -16,7 +16,7 @@ Therefore the setup proccess of [@gorhom/bottom-sheet](https://gorhom.github.io/
 
 | IOS                                                                                                                           | Android                                                                                                                       |
 | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| <img src="gifs/ios.gif" height=500/> | <img src="gifs/android.gif" height=500/>  |
+| <img src="assets/ios.gif" height=500/> | <img src="assets/android.gif" height=500/>  |
 
 ## 🛠 Installation
 
