@@ -1,6 +1,6 @@
 {
   "name": "react-native-magic-sheet",
-  "version": "0.3.9",
+  "version": "0.3.10",
   "description": "test",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
