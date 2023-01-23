@@ -16,11 +16,10 @@ import type {
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
-  useBottomSheetDynamicSnapPoints,
   type BottomSheetModalProps,
 } from '@gorhom/bottom-sheet';
 import {
-  BottomSheetLayoutContext,
+  BottomSheetContextProvider,
   useBottomSheetLayoutContext,
 } from './BottomSheetContextProvider';
 
@@ -36,26 +35,10 @@ type MagicSheetPortalProps = Partial<
 export const MagicSheetPortal: React.FC<MagicSheetPortalProps> = (
   portalProps
 ) => {
-  const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
-
-  const {
-    animatedHandleHeight,
-    animatedSnapPoints,
-    animatedContentHeight,
-    handleContentLayout,
-  } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
-
   return (
-    <BottomSheetLayoutContext.Provider
-      value={{
-        animatedHandleHeight,
-        animatedSnapPoints,
-        animatedContentHeight,
-        handleContentLayout,
-      }}
-    >
+    <BottomSheetContextProvider>
       <MagicSheetPortalContent {...portalProps} />
-    </BottomSheetLayoutContext.Provider>
+    </BottomSheetContextProvider>
   );
 };
 
