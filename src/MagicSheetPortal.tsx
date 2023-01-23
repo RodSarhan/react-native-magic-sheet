@@ -16,10 +16,12 @@ import type {
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
-  useBottomSheetDynamicSnapPoints,
   type BottomSheetModalProps,
 } from '@gorhom/bottom-sheet';
-import { BottomSheetLayoutContext } from './BottomSheetContextProvider';
+import {
+  BottomSheetLayoutContext,
+  useBottomSheetLayoutContext,
+} from './BottomSheetContextProvider';
 
 type ResolveFunction = (props?: any) => void;
 
@@ -33,14 +35,29 @@ type MagicSheetPortalProps = Partial<
 export const MagicSheetPortal: React.FC<MagicSheetPortalProps> = (
   portalProps
 ) => {
+  const layoutContext = useBottomSheetLayoutContext();
+
+  return (
+    <BottomSheetLayoutContext.Provider value={layoutContext}>
+      <MagicSheetPortalContent
+        {...portalProps}
+        snapPoints={layoutContext?.animatedSnapPoints}
+        handleHeight={layoutContext?.animatedHandleHeight}
+        contentHeight={layoutContext?.animatedContentHeight}
+      />
+    </BottomSheetLayoutContext.Provider>
+  );
+};
+
+export const MagicSheetPortalContent: React.FC<MagicSheetPortalProps> = (
+  portalProps
+) => {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [config, setConfig] = useState<NewSheetProps>({});
   const [sheetContent, setSheetContent] = useState<SheetContent>(() => <></>);
   const lastPromiseDidResolve = useRef(true);
-  const adaptiveSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
-  const dynamicSnapPointsValues =
-    useBottomSheetDynamicSnapPoints(adaptiveSnapPoints);
+  const fallbackSnapPoints = useMemo(() => ['50%'], []);
 
   const resolveRef = useRef<ResolveFunction>(() => {});
 
@@ -100,37 +117,33 @@ export const MagicSheetPortal: React.FC<MagicSheetPortalProps> = (
   }, [isVisible]);
 
   return (
-    <BottomSheetLayoutContext.Provider value={dynamicSnapPointsValues}>
-      <BottomSheetModal
-        ref={bottomSheetRef}
-        index={0}
-        snapPoints={dynamicSnapPointsValues.animatedSnapPoints}
-        backdropComponent={renderBackdrop}
-        keyboardBlurBehavior="restore"
-        {...portalProps}
-        handleHeight={dynamicSnapPointsValues.animatedHandleHeight}
-        contentHeight={dynamicSnapPointsValues.animatedContentHeight}
-        {...config}
-        onDismiss={() => {
-          if (!lastPromiseDidResolve.current) {
-            resolveRef.current();
-          }
-          config.onDismiss?.();
+    <BottomSheetModal
+      ref={bottomSheetRef}
+      index={0}
+      snapPoints={fallbackSnapPoints}
+      backdropComponent={renderBackdrop}
+      keyboardBlurBehavior="restore"
+      {...portalProps}
+      {...config}
+      onDismiss={() => {
+        if (!lastPromiseDidResolve.current) {
+          resolveRef.current();
+        }
+        config.onDismiss?.();
+        setIsVisible(false);
+      }}
+      onChange={(index) => {
+        if (index >= 0) {
+          setIsVisible(true);
+        }
+        if (index <= -1) {
           setIsVisible(false);
-        }}
-        onChange={(index) => {
-          if (index >= 0) {
-            setIsVisible(true);
-          }
-          if (index <= -1) {
-            setIsVisible(false);
-          }
-          config.onChange?.(index);
-        }}
-        style={config.style ?? portalProps.style}
-      >
-        {sheetContent}
-      </BottomSheetModal>
-    </BottomSheetLayoutContext.Provider>
+        }
+        config.onChange?.(index);
+      }}
+      style={config.style ?? portalProps.style}
+    >
+      {sheetContent}
+    </BottomSheetModal>
   );
 };
