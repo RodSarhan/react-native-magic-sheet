@@ -19,7 +19,7 @@ import {
   useBottomSheetDynamicSnapPoints,
   type BottomSheetModalProps,
 } from '@gorhom/bottom-sheet';
-import { BottomSheetLayoutContext } from 'src/BottomSheetContextProvider';
+import { BottomSheetLayoutContext } from './BottomSheetContextProvider';
 
 type ResolveFunction = (props?: any) => void;
 
