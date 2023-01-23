@@ -16,8 +16,10 @@ import type {
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
+  useBottomSheetDynamicSnapPoints,
   type BottomSheetModalProps,
 } from '@gorhom/bottom-sheet';
+import { BottomSheetLayoutContext } from 'src/BottomSheetContextProvider';
 
 type ResolveFunction = (props?: any) => void;
 
@@ -36,10 +38,13 @@ export const MagicSheetPortal: React.FC<MagicSheetPortalProps> = (
   const [config, setConfig] = useState<NewSheetProps>({});
   const [sheetContent, setSheetContent] = useState<SheetContent>(() => <></>);
   const lastPromiseDidResolve = useRef(true);
+  const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
+  const dynamicSnapPointsValues =
+    useBottomSheetDynamicSnapPoints(initialSnapPoints);
 
   const resolveRef = useRef<ResolveFunction>(() => {});
 
-  const snapPoints = useMemo(() => ['50%'], []);
+  const fallbackSnapPoints = useMemo(() => ['50%'], []);
 
   const hide = useCallback<TMagicSheet['hide']>(async (props) => {
     bottomSheetRef.current?.dismiss();
@@ -97,33 +102,36 @@ export const MagicSheetPortal: React.FC<MagicSheetPortalProps> = (
   }, [isVisible]);
 
   return (
-    <BottomSheetModal
-      ref={bottomSheetRef}
-      index={0}
-      snapPoints={snapPoints}
-      backdropComponent={renderBackdrop}
-      keyboardBlurBehavior="restore"
-      {...portalProps}
-      {...config}
-      onDismiss={() => {
-        if (!lastPromiseDidResolve.current) {
-          resolveRef.current();
-        }
-        config.onDismiss?.();
-        setIsVisible(false);
-      }}
-      onChange={(index) => {
-        if (index >= 0) {
-          setIsVisible(true);
-        }
-        if (index <= -1) {
+    <BottomSheetLayoutContext.Provider value={dynamicSnapPointsValues}>
+      <BottomSheetModal
+        ref={bottomSheetRef}
+        index={0}
+        snapPoints={fallbackSnapPoints}
+        backdropComponent={renderBackdrop}
+        keyboardBlurBehavior="restore"
+        {...portalProps}
+        {...dynamicSnapPointsValues}
+        {...config}
+        onDismiss={() => {
+          if (!lastPromiseDidResolve.current) {
+            resolveRef.current();
+          }
+          config.onDismiss?.();
           setIsVisible(false);
-        }
-        config.onChange?.(index);
-      }}
-      style={config.style ?? portalProps.style}
-    >
-      {sheetContent}
-    </BottomSheetModal>
+        }}
+        onChange={(index) => {
+          if (index >= 0) {
+            setIsVisible(true);
+          }
+          if (index <= -1) {
+            setIsVisible(false);
+          }
+          config.onChange?.(index);
+        }}
+        style={config.style ?? portalProps.style}
+      >
+        {sheetContent}
+      </BottomSheetModal>
+    </BottomSheetLayoutContext.Provider>
   );
 };
