@@ -108,7 +108,8 @@ export const MagicSheetPortal: React.FC<MagicSheetPortalProps> = (
         backdropComponent={renderBackdrop}
         keyboardBlurBehavior="restore"
         {...portalProps}
-        {...dynamicSnapPointsValues}
+        handleHeight={dynamicSnapPointsValues.animatedHandleHeight}
+        contentHeight={dynamicSnapPointsValues.animatedContentHeight}
         {...config}
         onDismiss={() => {
           if (!lastPromiseDidResolve.current) {
