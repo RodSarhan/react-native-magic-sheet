@@ -104,7 +104,7 @@ export const MagicSheetPortal: React.FC<MagicSheetPortalProps> = (
       <BottomSheetModal
         ref={bottomSheetRef}
         index={0}
-        snapPoints={undefined}
+        snapPoints={dynamicSnapPointsValues.animatedSnapPoints}
         backdropComponent={renderBackdrop}
         keyboardBlurBehavior="restore"
         {...portalProps}
