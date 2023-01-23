@@ -19,7 +19,10 @@ import {
   useBottomSheetDynamicSnapPoints,
   type BottomSheetModalProps,
 } from '@gorhom/bottom-sheet';
-import { BottomSheetLayoutContext } from './BottomSheetContextProvider';
+import {
+  BottomSheetLayoutContext,
+  useBottomSheetLayoutContext,
+} from './BottomSheetContextProvider';
 
 type ResolveFunction = (props?: any) => void;
 
@@ -51,12 +54,7 @@ export const MagicSheetPortal: React.FC<MagicSheetPortalProps> = (
         handleContentLayout,
       }}
     >
-      <MagicSheetPortalContent
-        {...portalProps}
-        snapPoints={animatedSnapPoints}
-        handleHeight={animatedHandleHeight}
-        contentHeight={animatedContentHeight}
-      />
+      <MagicSheetPortalContent {...portalProps} />
     </BottomSheetLayoutContext.Provider>
   );
 };
@@ -70,6 +68,15 @@ export const MagicSheetPortalContent: React.FC<MagicSheetPortalProps> = (
   const [sheetContent, setSheetContent] = useState<SheetContent>(() => <></>);
   const lastPromiseDidResolve = useRef(true);
   const fallbackSnapPoints = useMemo(() => ['50%'], []);
+
+  const layoutContext = useBottomSheetLayoutContext();
+  const adaptiveValues = layoutContext
+    ? {
+        snapPoints: layoutContext?.animatedSnapPoints,
+        handleHeight: layoutContext?.animatedHandleHeight,
+        contentHeight: layoutContext?.animatedContentHeight,
+      }
+    : undefined;
 
   const resolveRef = useRef<ResolveFunction>(() => {});
 
@@ -136,6 +143,7 @@ export const MagicSheetPortalContent: React.FC<MagicSheetPortalProps> = (
       backdropComponent={renderBackdrop}
       keyboardBlurBehavior="restore"
       {...portalProps}
+      {...adaptiveValues}
       {...config}
       onDismiss={() => {
         if (!lastPromiseDidResolve.current) {
