@@ -38,13 +38,11 @@ export const MagicSheetPortal: React.FC<MagicSheetPortalProps> = (
   const [config, setConfig] = useState<NewSheetProps>({});
   const [sheetContent, setSheetContent] = useState<SheetContent>(() => <></>);
   const lastPromiseDidResolve = useRef(true);
-  const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
+  const adaptiveSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
   const dynamicSnapPointsValues =
-    useBottomSheetDynamicSnapPoints(initialSnapPoints);
+    useBottomSheetDynamicSnapPoints(adaptiveSnapPoints);
 
   const resolveRef = useRef<ResolveFunction>(() => {});
-
-  const fallbackSnapPoints = useMemo(() => ['50%'], []);
 
   const hide = useCallback<TMagicSheet['hide']>(async (props) => {
     bottomSheetRef.current?.dismiss();
@@ -106,7 +104,7 @@ export const MagicSheetPortal: React.FC<MagicSheetPortalProps> = (
       <BottomSheetModal
         ref={bottomSheetRef}
         index={0}
-        snapPoints={fallbackSnapPoints}
+        snapPoints={adaptiveSnapPoints}
         backdropComponent={renderBackdrop}
         keyboardBlurBehavior="restore"
         {...portalProps}
