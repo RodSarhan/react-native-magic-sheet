@@ -18,10 +18,7 @@ import {
   BottomSheetModal,
   type BottomSheetModalProps,
 } from '@gorhom/bottom-sheet';
-import {
-  BottomSheetContextProvider,
-  useBottomSheetLayoutContext,
-} from './BottomSheetContextProvider';
+import { useBottomSheetLayoutContext } from './BottomSheetContextProvider';
 
 type ResolveFunction = (props?: any) => void;
 
@@ -33,16 +30,6 @@ type MagicSheetPortalProps = Partial<
  * @description A magic portal that should stay on the top of the app component hierarchy for the sheet to be displayed.
  */
 export const MagicSheetPortal: React.FC<MagicSheetPortalProps> = (
-  portalProps
-) => {
-  return (
-    <BottomSheetContextProvider>
-      <MagicSheetPortalContent {...portalProps} />
-    </BottomSheetContextProvider>
-  );
-};
-
-export const MagicSheetPortalContent: React.FC<MagicSheetPortalProps> = (
   portalProps
 ) => {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
@@ -62,11 +49,6 @@ export const MagicSheetPortalContent: React.FC<MagicSheetPortalProps> = (
     : undefined;
 
   const resolveRef = useRef<ResolveFunction>(() => {});
-
-  console.log('adaptiveValues', adaptiveValues);
-  console.log('fallbackSnapPoints', fallbackSnapPoints);
-  console.log('config', config);
-  console.log('portalProps', portalProps);
 
   const hide = useCallback<TMagicSheet['hide']>(async (props) => {
     bottomSheetRef.current?.dismiss();
