@@ -10,9 +10,9 @@ export const BottomSheetLayoutContext = createContext<ReturnType<
   typeof useBottomSheetDynamicSnapPoints
 > | null>(null);
 
-export const MagicSheetSnapPointsProvider: React.FC = ({
+export const MagicSheetSnapPointsProvider: React.FC<PropsWithChildren<{}>> = ({
   children,
-}: PropsWithChildren<{}>) => {
+}) => {
   const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
   const dynamicSnapPointsValues =
     useBottomSheetDynamicSnapPoints(initialSnapPoints);
