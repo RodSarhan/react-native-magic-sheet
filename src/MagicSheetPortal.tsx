@@ -63,6 +63,11 @@ export const MagicSheetPortalContent: React.FC<MagicSheetPortalProps> = (
 
   const resolveRef = useRef<ResolveFunction>(() => {});
 
+  console.log('adaptiveValues', adaptiveValues);
+  console.log('fallbackSnapPoints', fallbackSnapPoints);
+  console.log('config', config);
+  console.log('portalProps', portalProps);
+
   const hide = useCallback<TMagicSheet['hide']>(async (props) => {
     bottomSheetRef.current?.dismiss();
     resolveRef.current(props);
