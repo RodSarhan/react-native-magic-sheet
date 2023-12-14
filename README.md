@@ -144,14 +144,6 @@ magicSheet.show(
 ### Inner components
 It's recommended to use the components provided by [@gorhom/bottom-sheet](https://gorhom.github.io/react-native-bottom-sheet/modal/) inside of the bottom sheet as those components are made to adapt to the bottom sheet behavior, especially scrollables and text inputs.
 
-### Keyboard in android
-If you face issues with android keyboard the easiest approach would be to replace 
-```android:windowSoftInputMode="adjustResize"```
-with
-```android:windowSoftInputMode="adjustPan"```
-in the manifest file to mimic the behavior of ios, or use whatever keyboard handling solution you're comfortable with.
-
-This limitation is not specific to this library.
 
 ## 👨‍🏫 Contributing
 
